@@ -24,10 +24,8 @@ model Vote {
 }
 
 model VoteOption {
-  id          String   @id @default(cuid())
+  id          String @id @default(cuid())
   description String
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @default(now())
 
   Vote   Vote?   @relation(fields: [voteId], references: [id])
   voteId String?

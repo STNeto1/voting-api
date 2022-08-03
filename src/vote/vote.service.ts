@@ -26,7 +26,12 @@ export class VoteService {
   async findAll(): Promise<Array<Vote>> {
     return this.prisma.vote.findMany({
       include: {
-        options: true,
+        options: {
+          select: {
+            id: true,
+            description: true,
+          },
+        },
       },
     });
   }
@@ -35,7 +40,12 @@ export class VoteService {
     const vote = await this.prisma.vote.findUnique({
       where: { id },
       include: {
-        options: true,
+        options: {
+          select: {
+            id: true,
+            description: true,
+          },
+        },
       },
     });
 

@@ -1,4 +1,4 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiHideProperty, ApiProperty } from '@nestjs/swagger';
 import { VoteOption } from '@prisma/client';
 
 export class VoteOptionEntity implements VoteOption {
@@ -8,12 +8,6 @@ export class VoteOptionEntity implements VoteOption {
   @ApiProperty()
   description: string;
 
-  @ApiProperty()
-  createdAt: Date;
-
-  @ApiProperty()
-  updatedAt: Date;
-
-  @ApiProperty()
+  @ApiHideProperty()
   voteId: string;
 }
