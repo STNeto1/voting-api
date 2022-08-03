@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Vote } from '@prisma/client';
+import { VoteOptionEntity } from './vote-option.entity';
 
 export class VoteEntity implements Vote {
   @ApiProperty()
@@ -19,4 +20,7 @@ export class VoteEntity implements Vote {
 
   @ApiProperty()
   updatedAt: Date;
+
+  @ApiProperty({ type: VoteOptionEntity, isArray: true })
+  options: Array<VoteOptionEntity> = [];
 }

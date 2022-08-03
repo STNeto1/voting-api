@@ -14,17 +14,29 @@ export class VoteService {
         title: createVoteDto.title,
         start: createVoteDto.start,
         end: createVoteDto.end,
+        options: {
+          create: createVoteDto.options.map((option) => ({
+            description: option,
+          })),
+        },
       },
     });
   }
 
   async findAll(): Promise<Array<Vote>> {
-    return this.prisma.vote.findMany({});
+    return this.prisma.vote.findMany({
+      include: {
+        options: true,
+      },
+    });
   }
 
   async findOne(id: string): Promise<Vote> {
     const vote = await this.prisma.vote.findUnique({
       where: { id },
+      include: {
+        options: true,
+      },
     });
 
     if (!vote) {

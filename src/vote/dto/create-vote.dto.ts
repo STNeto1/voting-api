@@ -13,4 +13,8 @@ export class CreateVoteDto {
   @ApiProperty({ type: Date, required: true })
   @IsDateString()
   end: Date;
+
+  @ApiProperty({ type: String, required: true, isArray: true })
+  @IsNotEmpty({ each: true })
+  options: string[];
 }
