@@ -26,6 +26,7 @@ model Vote {
 model VoteOption {
   id          String @id @default(cuid())
   description String
+  voted       BigInt @default(0)
 
   Vote   Vote?   @relation(fields: [voteId], references: [id])
   voteId String?

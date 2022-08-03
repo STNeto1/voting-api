@@ -1,6 +1,12 @@
 import { Body, Controller, Get, Param, Post } from '@nestjs/common';
-import { ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiCreatedResponse,
+  ApiNoContentResponse,
+  ApiOkResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { Vote } from '@prisma/client';
+import { CastVoteDto } from './dto/cast-vote.dto';
 
 import { CreateVoteDto } from './dto/create-vote.dto';
 import { VoteEntity } from './entities/vote.entity';
@@ -15,6 +21,12 @@ export class VoteController {
   @ApiCreatedResponse({ type: VoteEntity })
   async create(@Body() createVoteDto: CreateVoteDto): Promise<Vote> {
     return this.voteService.create(createVoteDto);
+  }
+
+  @Post('vote')
+  @ApiNoContentResponse({})
+  async castVote(@Body() data: CastVoteDto): Promise<void> {
+    return this.voteService.castVote(data);
   }
 
   @Get()

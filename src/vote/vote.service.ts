@@ -1,7 +1,9 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { Vote } from '@prisma/client';
+import { isAfter } from 'date-fns';
 
 import { PrismaService } from '../prisma/prisma.service';
+import { CastVoteDto } from './dto/cast-vote.dto';
 import { CreateVoteDto } from './dto/create-vote.dto';
 
 @Injectable()
@@ -54,5 +56,21 @@ export class VoteService {
     }
 
     return vote;
+  }
+
+  async castVote(data: CastVoteDto): Promise<void> {
+    const vote = await this.findOne(data.vote);
+    if (isAfter(new Date(), vote.end)) {
+      throw new HttpException('Vote is closed', HttpStatus.BAD_REQUEST);
+    }
+
+    await this.prisma.voteOption.update({
+      where: { id: data.option },
+      data: {
+        voted: {
+          increment: 1,
+        },
+      },
+    });
   }
 }

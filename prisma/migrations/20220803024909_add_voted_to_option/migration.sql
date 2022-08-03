@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE `VoteOption` ADD COLUMN `voted` BIGINT NOT NULL DEFAULT 0;

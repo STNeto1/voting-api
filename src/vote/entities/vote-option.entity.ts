@@ -8,6 +8,9 @@ export class VoteOptionEntity implements VoteOption {
   @ApiProperty()
   description: string;
 
+  @ApiProperty()
+  voted: bigint;
+
   @ApiHideProperty()
   voteId: string;
 }
