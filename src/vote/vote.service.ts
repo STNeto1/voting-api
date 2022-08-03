@@ -1,26 +1,36 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { Vote } from '@prisma/client';
+
+import { PrismaService } from '../prisma/prisma.service';
 import { CreateVoteDto } from './dto/create-vote.dto';
-import { UpdateVoteDto } from './dto/update-vote.dto';
 
 @Injectable()
 export class VoteService {
-  create(createVoteDto: CreateVoteDto) {
-    return 'This action adds a new vote';
+  constructor(private prisma: PrismaService) {}
+
+  async create(createVoteDto: CreateVoteDto): Promise<Vote> {
+    return this.prisma.vote.create({
+      data: {
+        title: createVoteDto.title,
+        start: createVoteDto.start,
+        end: createVoteDto.end,
+      },
+    });
   }
 
-  findAll() {
-    return `This action returns all vote`;
+  async findAll(): Promise<Array<Vote>> {
+    return this.prisma.vote.findMany({});
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} vote`;
-  }
+  async findOne(id: string): Promise<Vote> {
+    const vote = await this.prisma.vote.findUnique({
+      where: { id },
+    });
 
-  update(id: number, updateVoteDto: UpdateVoteDto) {
-    return `This action updates a #${id} vote`;
-  }
+    if (!vote) {
+      throw new HttpException('Not found', HttpStatus.NOT_FOUND);
+    }
 
-  remove(id: number) {
-    return `This action removes a #${id} vote`;
+    return vote;
   }
 }
